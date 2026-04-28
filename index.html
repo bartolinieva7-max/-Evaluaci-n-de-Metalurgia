@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Evaluación · Metalurgia del Acero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #ffe9b0 0%, #fce4ec 50%, #fff3e0 100%);
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', system-ui, sans-serif;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .exam-wrapper {
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            background: #fffffff5;
+            backdrop-filter: blur(3px);
+            border-radius: 2rem;
+            box-shadow: 0 22px 40px -14px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 200, 140, 0.5);
+            padding: 1.5rem 1.8rem;
+            transition: all 0.25s;
+        }
+        .exam-header {
+            text-align: center;
+            margin-bottom: 1.4rem;
+            border-bottom: 3px solid #ffcf9a;
+            padding-bottom: 0.8rem;
+        }
+        .exam-header h1 {
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, #c06c2e, #e85d8a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.25rem;
+        }
+        .exam-header .subtitle {
+            color: #cc7b4a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .exam-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            background: #fff2df;
+            border-radius: 2rem;
+            padding: 0.55rem 1.2rem;
+            margin-bottom: 1.6rem;
+            font-weight: 700;
+            color: #a05a2c;
+            font-size: 0.9rem;
+        }
+        .badge {
+            padding: 0.25rem 0.9rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
+        }
+        .badge-info {
+            background: #ffe1b3;
+            color: #7a4a2a;
+        }
+        .badge-score {
+            background: #c0e0d0;
+            color: #2e5a3a;
+        }
+        .badge-topic {
+            background: #f0d5c0;
+            color: #6b3a2a;
+            font-size: 0.78rem;
+        }
+        .question-block {
+            background: #ffffff;
+            border-radius: 1.4rem;
+            padding: 1.2rem 1.3rem;
+            margin-bottom: 1.1rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            border-left: 7px solid #e0854a;
+            border-right: 1px solid #ffe2bc;
+            transition: all 0.2s;
+            scroll-margin-top: 0.8rem;
+        }
+        .question-block.answered-correct {
+            border-left-color: #5ba85b !important;
+            background: #f6fdf6;
+        }
+        .question-block.answered-incorrect {
+            border-left-color: #d46565 !important;
+            background: #fef6f6;
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+        .q-num {
+            font-weight: 800;
+            color: #5c3b1f;
+            font-size: 1rem;
+            background: #fef5ed;
+            padding: 0.15rem 0.7rem;
+            border-radius: 20px;
+        }
+        .q-topic {
+            font-size: 0.75rem;
+            color: #8b5a3c;
+            font-weight: 700;
+            background: #fff3e0;
+            padding: 0.15rem 0.7rem;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .question-text {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #3e2a1a;
+            margin-bottom: 0.9rem;
+            line-height: 1.45;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            margin-bottom: 0.7rem;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            cursor: pointer;
+            padding: 0.55rem 0.8rem;
+            border-radius: 0.9rem;
+            background: #fefaf5;
+            border: 2px solid #f0d6b5;
+            transition: all 0.15s;
+        }
+        .option:hover {
+            background: #fff5e9;
+            border-color: #e0a870;
+            transform: scale(1.01);
+        }
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1.15rem;
+            height: 1.15rem;
+            border: 2.2px solid #d4854a;
+            border-radius: 50%;
+            margin-top: 0.1rem;
+            cursor: pointer;
+            background: white;
+            flex-shrink: 0;
+            transition: 0.15s;
+        }
+        input[type="radio"]:checked {
+            background-color: #e09050;
+            border-color: #e09050;
+            box-shadow: inset 0 0 0 3px white;
+        }
+        .option label {
+            flex: 1;
+            font-size: 0.93rem;
+            line-height: 1.35;
+            cursor: pointer;
+            color: #5a3a20;
+            font-weight: 600;
+        }
+        .feedback-line {
+            margin-top: 0.6rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 0.8rem;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            border-left: 5px solid;
+            display: none;
+            background: #fffbf3;
+            color: #5a4a3a;
+        }
+        .feedback-line.show {
+            display: block;
+        }
+        .feedback-line.correct-fb {
+            border-left-color: #5ba85b;
+            background: #edf7ed;
+            color: #2e5a2e;
+        }
+        .feedback-line.incorrect-fb {
+            border-left-color: #d46565;
+            background: #fef2f2;
+            color: #7a3030;
+        }
+        .feedback-line.pending-fb {
+            border-left-color: #e0b060;
+            background: #fffaf0;
+            color: #6b4d1c;
+        }
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.3rem;
+            padding-top: 0.8rem;
+            border-top: 2px solid #f0ddc0;
+        }
+        .btn {
+            border: none;
+            background: #f0dbbc;
+            color: #7a4a28;
+            font-weight: 800;
+            padding: 0.65rem 1.5rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            letter-spacing: 0.2px;
+        }
+        .btn-primary {
+            background: #c7e0d0;
+            color: #3e5e3e;
+        }
+        .btn-primary:hover {
+            background: #b0d4be;
+            transform: scale(1.03);
+        }
+        .btn-success {
+            background: #7db87d;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #5fa05f;
+            transform: scale(1.03);
+        }
+        .btn-reset {
+            background: #e0a870;
+            color: white;
+        }
+        .btn-reset:hover {
+            background: #d09050;
+            transform: scale(1.03);
+        }
+        .score-summary {
+            margin-top: 1.2rem;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 800;
+            padding: 0.8rem;
+            border-radius: 1.2rem;
+            background: #fff8ed;
+            border: 2px solid #e0b870;
+            color: #5a3a1a;
+            display: none;
+        }
+        .score-summary.show {
+            display: block;
+        }
+        .to-top-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #e0854a;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 99;
+            transition: 0.2s;
+        }
+        .to-top-btn:hover {
+            background: #c97030;
+            transform: scale(1.1);
+        }
+        footer {
+            text-align: center;
+            font-size: 0.72rem;
+            margin-top: 1rem;
+            color: #b8946e;
+            letter-spacing: 0.2px;
+        }
+        @media (max-width: 600px) {
+            .exam-wrapper {
+                padding: 1rem;
+            }
+            .question-text {
+                font-size: 0.94rem;
+            }
+            .option label {
+                font-size: 0.86rem;
+            }
+            .btn {
+                padding: 0.55rem 1.1rem;
+                font-size: 0.82rem;
+            }
+            .exam-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="exam-wrapper" id="examWrapper">
+    <div class="exam-header">
+        <h1>🔩 Evaluación de Metalurgia</h1>
+        <div class="subtitle">Viaje del Acero · Alto Horno · Palanquilla · Laminación · Trefilado · Perfilado</div>
+    </div>
+    <div class="exam-meta">
+        <span class="badge badge-info" id="questionCount">📋 10 preguntas</span>
+        <span class="badge badge-topic" id="topicMix">🎯 Banco: 40 preguntas</span>
+        <span class="badge badge-score" id="liveScoreDisplay">⭐ Puntuación: — / 10</span>
+    </div>
+    <div id="questionsContainer"></div>
+    <div class="action-bar">
+        <button id="correctBtn" class="btn btn-success">✅ Corregir Examen</button>
+        <button id="newExamBtn" class="btn btn-reset">🔄 Nueva Prueba (otro alumno)</button>
+    </div>
+    <div id="scoreSummary" class="score-summary"></div>
+    <footer>📌 Responde las 10 preguntas y presiona <strong>"Corregir Examen"</strong>. Cada acierto vale 1 punto. Las opciones se barajan en cada prueba.</footer>
+</div>
+<button class="to-top-btn" id="toTopBtn" title="Ir arriba">⬆</button>
+
+<script>
+    (function() {
+        // ==================== BANCO UNIFICADO DE 40 PREGUNTAS ====================
+        const fullBank = [
+            // --- Cuestionario 1: El Viaje Metalúrgico del Acero (20 preguntas, 3 opciones) ---
+            {
+                topic: "Minerales · Magnetita",
+                text: "¿Qué característica distingue a la Magnetita (Fe₃O₄) de la Hematita (Fe₂O₃) según las fichas técnicas?",
+                options: ["Su color rojo oscuro.", "Sus propiedades magnéticas.", "Su facilidad de reducción química."],
+                correct: "b",
+                explanation: "Correcta: La magnetita es magnética, facilitando la separación de impurezas. El color rojo oscuro es de la hematita; la fácil reducción química también es de la hematita."
+            },
+            {
+                topic: "Purificación · Trituración",
+                text: "En el proceso de purificación física, ¿cuál es el objetivo primordial de la Estación 1 (Trituración y Molienda)?",
+                options: ["Expulsar la ganga pesada como el sílice.", "Aumentar la superficie de contacto del mineral.", "Hornear el mineral a 1200°C."],
+                correct: "b",
+                explanation: "Correcta: Reducir el tamaño aumenta la superficie de contacto para el procesamiento posterior. Expulsar ganga es concentración; hornear a 1200°C es peletización."
+            },
+            {
+                topic: "Concentración · Gravimetría",
+                text: "¿Qué método se utiliza en la Estación 2 para separar el mineral de las impurezas basándose en la diferencia de densidad?",
+                options: ["Flotación.", "Separación magnética.", "Gravimetría."],
+                correct: "c",
+                explanation: "Correcta: La gravimetría usa diferencia de densidad. La flotación usa reactivos; la separación magnética usa magnetismo."
+            },
+            {
+                topic: "Aglomeración · Pellets",
+                text: "¿Por qué es crucial que los 'Pellets' resultantes de la aglomeración sean porosos?",
+                options: ["Para que pesen menos en el transporte.", "Para permitir el flujo de gases dentro del horno.", "Para facilitar su disolución en agua."],
+                correct: "b",
+                explanation: "Correcta: La porosidad permite la interacción de gases reductores con el mineral en el alto horno. No es por peso ni por disolución."
+            },
+            {
+                topic: "Alto Horno · Insumos",
+                text: "¿Cuáles son los insumos principales (entradas) que alimentan el Alto Horno?",
+                options: ["Chatarra de acero y electrodos.", "Mineral de hierro (pellets), coque y aire caliente.", "Arrabio líquido y oxígeno puro."],
+                correct: "b",
+                explanation: "Correcta: Pellets, coque (reductor/combustible) y aire caliente. Chatarra y electrodos son del horno eléctrico; arrabio y oxígeno son del convertidor LD."
+            },
+            {
+                topic: "Alto Horno · CO",
+                text: "¿Qué función cumple el monóxido de carbono (CO) en el núcleo químico del Alto Horno?",
+                options: ["Actúa como refrigerante para el acero líquido.", "Roba el oxígeno del óxido de hierro para dejar hierro metálico.", "Se convierte en escoria para proteger el metal."],
+                correct: "b",
+                explanation: "Correcta: CO es el agente reductor: Fe₂O₃ + 3CO → 2Fe + 3CO₂. No refrigera ni se convierte en escoria."
+            },
+            {
+                topic: "Alto Horno · Salida",
+                text: "Al salir del Alto Horno, ¿cómo se distribuyen los materiales líquidos?",
+                options: ["La escoria, al ser más pesada, se va al fondo.", "El arrabio líquido se sitúa en la capa inferior por su peso.", "Ambos se mezclan para formar palanquillas directamente."],
+                correct: "b",
+                explanation: "Correcta: El arrabio, más denso, queda abajo; la escoria flota. No se mezclan para formar palanquillas."
+            },
+            {
+                topic: "Arrabio · Carbono",
+                text: "¿Cuál es el contenido de carbono típico del Arrabio?",
+                options: ["0.1% - 0.5%.", "3.5% - 4.5%.", "Más del 10%."],
+                correct: "b",
+                explanation: "Correcta: El arrabio tiene 3.5–4.5% de carbono, lo que le da dureza y fragilidad. 0.1-0.5% es acero bajo carbono; más del 10% es excesivo."
+            },
+            {
+                topic: "Arrabio · Fragilidad",
+                text: "¿Por qué el Arrabio no se utiliza para aplicaciones estructurales (como edificios)?",
+                options: ["Porque es demasiado blando y flexible.", "Debido a su fragilidad extrema y nula ductilidad.", "Porque es un material muy caro de producir."],
+                correct: "b",
+                explanation: "Correcta: El arrabio es frágil y se fractura bajo tensión, no es dúctil. No es blando ni especialmente caro."
+            },
+            {
+                topic: "Ruta B · Chatarra",
+                text: "¿Cuál es la materia prima principal de la 'Ruta B' en la producción de acero (Horno de Arco Eléctrico)?",
+                options: ["Arrabio fundido.", "Mineral de hierro en bruto.", "Chatarra de acero."],
+                correct: "c",
+                explanation: "Correcta: El horno eléctrico usa chatarra reciclada. Arrabio fundido es Ruta A (convertidor LD); mineral en bruto no se usa directamente."
+            },
+            {
+                topic: "Convertidor LD",
+                text: "¿Qué ventaja operativa ofrece el Convertidor LD (Ruta A)?",
+                options: ["Mayor eficiencia energética mediante reciclaje.", "Producción a gran escala mediante inyección de oxígeno.", "No requiere control térmico."],
+                correct: "b",
+                explanation: "Correcta: El convertidor LD procesa gran volumen de arrabio con oxígeno. La eficiencia por reciclaje es del horno eléctrico; siempre requiere control térmico."
+            },
+            {
+                topic: "Colada Continua",
+                text: "En el proceso de 'Colada Continua', ¿qué función cumplen los rociadores de agua?",
+                options: ["Limpiar el acero de impurezas superficiales.", "Controlar la velocidad de enfriamiento para definir la estructura del grano.", "Solidificar el acero instantáneamente en milisegundos."],
+                correct: "b",
+                explanation: "Correcta: El enfriamiento controlado evita tensiones y grietas internas. No es para limpiar impurezas ni es instantáneo."
+            },
+            {
+                topic: "Calidad · Ensayos",
+                text: "¿Para qué se realizan pruebas no destructivas al final de la colada continua?",
+                options: ["Para medir la temperatura exacta del molde.", "Para asegurar la ausencia de defectos internos antes de la comercialización.", "Para aumentar el porcentaje de carbono del acero."],
+                correct: "b",
+                explanation: "Correcta: Garantiza calidad sin defectos ocultos. No mide temperatura ni aumenta el carbono."
+            },
+            {
+                topic: "Palanquilla · Definición",
+                text: "¿Qué define a la 'Palanquilla' en el proceso siderúrgico?",
+                options: ["Es el mineral de hierro antes de entrar al horno.", "Es un producto semiterminado de sección transversal cuadrada.", "Es el producto final que se entrega al consumidor (como un cable)."],
+                correct: "b",
+                explanation: "Correcta: La palanquilla es un producto semiterminado de sección cuadrada, inicio de la conformación física."
+            },
+            {
+                topic: "Laminación · Fase",
+                text: "¿En qué fase del proceso se sitúa la 'Laminación'?",
+                options: ["Fase 1: Química.", "Fase 2: Física (Conformación).", "En la extracción minera."],
+                correct: "b",
+                explanation: "Correcta: La laminación es la fase de conformación física de la palanquilla para crear perfiles."
+            },
+            {
+                topic: "Temperatura · Acero líquido",
+                text: "Según el diagrama de fases, ¿cuál es la temperatura aproximada del acero líquido?",
+                options: ["500°C.", "1000°C.", "1600°C."],
+                correct: "c",
+                explanation: "Correcta: El acero líquido está alrededor de 1600°C para el refinamiento. 500°C es sólido; 1000°C es temperatura de horneado de pellets."
+            },
+            {
+                topic: "Industria · Automotriz",
+                text: "¿Qué industria utiliza las palanquillas para convertirlas en chasis y maquinaria?",
+                options: ["Industria de la construcción.", "Industria automotriz.", "Industria de la panadería."],
+                correct: "b",
+                explanation: "Correcta: La industria automotriz usa palanquillas para chasis y maquinaria. Construcción usa barras principalmente."
+            },
+            {
+                topic: "Geografía · Productores",
+                text: "¿Qué países se mencionan como productores clave de mineral de hierro en el mapa?",
+                options: ["Estados Unidos, China y México.", "Brasil, Rusia y Australia.", "Argentina, Canadá y Sudáfrica."],
+                correct: "b",
+                explanation: "Correcta: Los tres puntos destacados son Brasil, Rusia y Australia."
+            },
+            {
+                topic: "Trefilado · Productos",
+                text: "El proceso de 'Trefilado' se asocia comúnmente con la fabricación de:",
+                options: ["Vigas de gran tamaño para puentes.", "Cables y tubos de conducción.", "Pellets porosos."],
+                correct: "b",
+                explanation: "Correcta: El trefilado estira alambre para cables o tubos delgados. Vigas son de laminación; pellets son de aglomeración."
+            },
+            {
+                topic: "Futuro · IA",
+                text: "Según la portada del documento, ¿qué tecnología impulsa la conformación de perfiles en la 'Revolución Industrial' moderna?",
+                options: ["Energía de vapor.", "Inteligencia Artificial (IA).", "Trabajo manual artesanal."],
+                correct: "b",
+                explanation: "Correcta: La fuente menciona la conformación de perfiles impulsada por IA. El vapor es del pasado; el trabajo manual no es industrial moderno."
+            },
+
+            // --- Cuestionario 2: El Punto de Inflexión - La Palanquilla (20 preguntas, 4 opciones) ---
+            {
+                topic: "Palanquilla · Geometría",
+                text: "¿Qué característica geométrica define a la palanquilla en la etapa semiterminada del acero?",
+                options: ["Sección transversal cuadrada optimizada", "Perfil en H con alas gruesas", "Superficie cilíndrica uniforme pulida", "Sección triangular para laminado fino"],
+                correct: "a",
+                explanation: "Correcta: La palanquilla se caracteriza por tener una sección transversal cuadrada, ideal para procesos de laminación posteriores."
+            },
+            {
+                topic: "Palanquilla · Punto de partida",
+                text: "Una acería debe seleccionar un punto de partida que minimice ajustes químicos posteriores y maximice la deformación física eficiente. ¿Qué elección es más adecuada y por qué?",
+                options: ["Palanquilla por ser el final químico e inicio ideal", "Alambrón por tener geometría poco controlada", "Plancha porque permite tratamientos químicos extensos", "Bloom porque requiere más refinamiento químico"],
+                correct: "a",
+                explanation: "Correcta: La palanquilla representa el final del proceso químico y el inicio óptimo de la conformación mecánica."
+            },
+            {
+                topic: "Palanquilla · Aplicaciones",
+                text: "¿Cuál de las siguientes aplicaciones industriales corresponde directamente al uso de palanquillas?",
+                options: ["Recubrimientos anticorrosivos por inmersión", "Barras de refuerzo y vigas en construcción", "Fabricación de vidrio templado y laminado", "Procesamiento de polímeros termoestables"],
+                correct: "b",
+                explanation: "Correcta: Las palanquillas se utilizan para fabricar barras de refuerzo, vigas y perfiles estructurales."
+            },
+            {
+                topic: "Laminación · Rodillos",
+                text: "En el diagrama, ¿qué función principal cumplen los rodillos en la laminación?",
+                options: ["Aplican la presión directa al material", "Soportan el peso y las fuerzas extremas", "Aseguran la orientación y las tolerancias", "Convierten energía térmica en eléctrica"],
+                correct: "a",
+                explanation: "Correcta: Los rodillos aplican presión directa para deformar el material metálico durante la laminación."
+            },
+            {
+                topic: "Laminación · Bancada",
+                text: "Según la ilustración, ¿qué describe mejor la bancada del tren de laminación?",
+                options: ["Sensores que garantizan tolerancias", "Estructura robusta que soporta cargas", "Par de cilindros que reducen espesor", "Motores y reductores de precisión"],
+                correct: "b",
+                explanation: "Correcta: La bancada es la estructura robusta diseñada para soportar las enormes cargas durante la laminación."
+            },
+            {
+                topic: "Laminación · Caliente",
+                text: "¿Qué rango de temperaturas caracteriza la laminación en caliente mostrada?",
+                options: ["Novecientos a mil doscientos grados", "Cincuenta a cien grados", "Dos mil a tres mil grados", "Cero a veinte grados"],
+                correct: "a",
+                explanation: "Correcta: La laminación en caliente típicamente se realiza entre 900°C y 1200°C para facilitar la deformación."
+            },
+            {
+                topic: "Laminación · Frío",
+                text: "En la lámina sobre laminación en frío, ¿qué efecto termodinámico se destaca?",
+                options: ["Se funde parcialmente el acero", "La temperatura reduce la viscosidad", "El metal se vuelve más maleable", "El material se endurece por deformación"],
+                correct: "d",
+                explanation: "Correcta: En la laminación en frío se produce endurecimiento por deformación (work hardening) sin cambios de temperatura significativos."
+            },
+            {
+                topic: "Laminación · Precisión",
+                text: "Un ingeniero necesita producir láminas muy finas con excelente acabado superficial. Según los diagramas, ¿qué proceso elegiría y por qué?",
+                options: ["Laminación mixta por menor costo", "Laminación en caliente por maleabilidad", "Laminación en caliente por rapidez", "Laminación en frío por alta precisión"],
+                correct: "d",
+                explanation: "Correcta: La laminación en frío ofrece alta precisión dimensional y excelente acabado superficial."
+            },
+            {
+                topic: "Laminación · Reducción",
+                text: "Si el objetivo es una reducción masiva del espesor inicial de un planchón grueso, ¿cuál es la decisión más adecuada?",
+                options: ["Laminación en caliente por productos gruesos", "Laminación en frío por dureza del metal", "Rectificado final por tolerancias finas", "Temple directo para alta resistencia"],
+                correct: "a",
+                explanation: "Correcta: La laminación en caliente permite reducciones masivas de espesor gracias a la mayor ductilidad del material."
+            },
+            {
+                topic: "Laminación · Accionamiento",
+                text: "En el equipo mostrado, ¿qué componente asegura un giro constante de los rodillos?",
+                options: ["Refrigeración con agua pulverizada", "Bancada de estructura reforzada", "Guías de orientación automatizadas", "Sistema de accionamiento con reductores"],
+                correct: "d",
+                explanation: "Correcta: El sistema de accionamiento con motores y reductores garantiza un giro constante y controlado."
+            },
+            {
+                topic: "Trefilado · Dimensional",
+                text: "En el trefilado, ¿qué cambio dimensional principal ocurre en la pieza metálica al pasar por la matriz?",
+                options: ["Disminuye el espesor y acorta la longitud", "Aumenta el diámetro y disminuye la longitud", "Disminuye el diámetro y aumenta la longitud", "Se mantiene el diámetro y aumenta el espesor"],
+                correct: "c",
+                explanation: "Correcta: El trefilado reduce el diámetro mientras alarga la pieza, manteniendo el volumen constante."
+            },
+            {
+                topic: "Perfilado · Ventaja",
+                text: "¿Cuál es una ventaja clave del perfilado con rodillos en líneas continuas?",
+                options: ["Alta productividad y costo eficiente", "Aplicable solo a geometrías sólidas", "Precisión baja y pocas estaciones", "Elevado desperdicio y baja velocidad"],
+                correct: "a",
+                explanation: "Correcta: El perfilado en línea continua ofrece alta productividad y eficiencia de costes para grandes volúmenes."
+            },
+            {
+                topic: "Trefilado · Producto típico",
+                text: "Selecciona el producto más típico del trefilado en procesos industriales.",
+                options: ["Chapas planas de baja dureza", "Piezas fundidas de formas libres", "Perfiles U para estructuras ligeras", "Alambres de acero de alta resistencia"],
+                correct: "d",
+                explanation: "Correcta: El trefilado se utiliza principalmente para producir alambres de acero de alta resistencia."
+            },
+            {
+                topic: "Perfilado · Estaciones",
+                text: "En el perfilado progresivo, ¿qué operación realizan las múltiples estaciones de rodillos sobre la lámina?",
+                options: ["Tensan la lámina sin cambiar forma", "Conforman gradualmente la sección deseada", "Perforan orificios antes del doblado", "Cortan transversalmente a cada paso"],
+                correct: "b",
+                explanation: "Correcta: Las estaciones sucesivas conforman gradualmente la sección transversal deseada del perfil."
+            },
+            {
+                topic: "Perfilado · Canales",
+                text: "Una fábrica necesita producir canales estructurales largos con tolerancias estrechas. ¿Qué proceso es más adecuado y por qué?",
+                options: ["Perfilado, por su conformado continuo y tolerancias altas", "Fundición, por su versatilidad en cavidades complejas", "Trefilado, por su reducción de diámetro controlada", "Forja, por su compresión local y alta tenacidad"],
+                correct: "a",
+                explanation: "Correcta: El perfilado continuo permite producir canales largos con alta precisión dimensional y tolerancias estrechas."
+            },
+            {
+                topic: "Digital · Gemelos",
+                text: "En la laminación de acero, ¿qué aportan los gemelos digitales según la práctica actual?",
+                options: ["Sustituyen completamente los rodillos físicos reales", "Registran solo temperaturas de hornos industriales", "Simulan virtualmente diseño y condiciones operativas", "Aumentan la fricción para mayor conformado final"],
+                correct: "c",
+                explanation: "Correcta: Los gemelos digitales simulan virtualmente el diseño y las condiciones operativas para optimizar procesos."
+            },
+            {
+                topic: "Ciclo · Fases",
+                text: "Ordena correctamente las fases clave del ciclo moderno del acero, comenzando en la extracción.",
+                options: ["Conformación → Tierra → Uso → Reciclaje → Puente físico → Fuego", "Puente físico → Conformación → Fuego químico → Tierra → Uso → Reciclaje", "Uso → Reciclaje → Tierra → Fuego químico → Conformación → Puente", "Tierra → Fuego químico → Puente físico → Conformación → Uso → Reciclaje"],
+                correct: "d",
+                explanation: "Correcta: Extracción (tierra), refinación (fuego químico), colada (puente físico), laminación (conformación), uso y reciclaje."
+            },
+            {
+                topic: "Innovación · Ultrasonido",
+                text: "Un ingeniero busca reducir drásticamente la fricción durante el trefilado para cambiar de configuración más rápido. ¿Qué innovación debe elegir?",
+                options: ["Rodillos pasivos con recubrimiento blando", "Simulación numérica sin sensores físicos", "Temple rápido con enfriamiento criogénico", "Trefilado ultrasónico con vibración aplicada"],
+                correct: "d",
+                explanation: "Correcta: El trefilado ultrasónico aplica vibraciones de alta frecuencia que reducen la fricción y permiten cambios más rápidos."
+            },
+            {
+                topic: "Calidad · Controles previos",
+                text: "Se desea heredar alta calidad dimensional en laminación de la Fase 2. ¿Qué controles previos son críticos según la síntesis del ciclo?",
+                options: ["Cambios de diseño sin pruebas virtuales", "Uso anticipado en infraestructura civil", "Solo aumento de velocidad de los rodillos", "Eliminación de impurezas y control térmico de grano"],
+                correct: "d",
+                explanation: "Correcta: La calidad dimensional requiere un control riguroso de impurezas y de la microestructura mediante el control térmico del grano."
+            },
+            {
+                topic: "Futuro · Cero defectos",
+                text: "Para lograr cero defectos en piezas de acero del futuro, ¿qué combinación es coherente con las metas planteadas?",
+                options: ["Automatización robótica y control de IA milimétrica", "Evitar aleaciones y mantener composiciones fijas", "Incremento manual de inspecciones visuales", "Único uso de hornos altos convencionales"],
+                correct: "a",
+                explanation: "Correcta: La combinación de automatización robótica e inteligencia artificial permite un control milimétrico para alcanzar cero defectos."
+            }
+        ];
+
+        const LETTERS = ['a', 'b', 'c', 'd'];
+
+        /**
+         * Baraja las opciones de una pregunta y actualiza la letra correcta y la explicación.
+         * Soporta preguntas con 3 o 4 opciones.
+         */
+        function shuffleQuestionOptions(originalQ) {
+            const items = originalQ.options.map((text, idx) => ({ text, origIndex: idx }));
+            const numOptions = items.length;
+            // Fisher-Yates shuffle
+            for (let i = numOptions - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [items[i], items[j]] = [items[j], items[i]];
+            }
+            const newOptions = items.map(item => item.text);
+            const origCorrectIdx = LETTERS.indexOf(originalQ.correct);
+            let newCorrectIdx = -1;
+            for (let i = 0; i < numOptions; i++) {
+                if (items[i].origIndex === origCorrectIdx) {
+                    newCorrectIdx = i;
+                    break;
+                }
+            }
+            const newCorrectLetter = LETTERS[newCorrectIdx];
+            // Actualizar explicación: reemplazar "Correcta (X):" o "Correcta:" por la nueva letra
+            let newExplanation = originalQ.explanation;
+            const regex1 = /^Correcta \([a-d]\):\s*/i;
+            const regex2 = /^Correcta:\s*/i;
+            if (regex1.test(newExplanation)) {
+                const rest = newExplanation.replace(regex1, '');
+                newExplanation = `Correcta (${newCorrectLetter}): ${rest}`;
+            } else if (regex2.test(newExplanation)) {
+                const rest = newExplanation.replace(regex2, '');
+                newExplanation = `Correcta (${newCorrectLetter}): ${rest}`;
+            }
+            return {
+                topic: originalQ.topic,
+                text: originalQ.text,
+                options: newOptions,
+                correct: newCorrectLetter,
+                explanation: newExplanation
+            };
+        }
+
+        const TOTAL_QUESTIONS = 10;
+        let currentExamQuestions = [];
+        let userAnswers = new Array(TOTAL_QUESTIONS).fill(null);
+        let examCorrected = false;
+
+        const questionsContainer = document.getElementById('questionsContainer');
+        const correctBtn = document.getElementById('correctBtn');
+        const newExamBtn = document.getElementById('newExamBtn');
+        const scoreSummary = document.getElementById('scoreSummary');
+        const liveScoreDisplay = document.getElementById('liveScoreDisplay');
+        const questionCountSpan = document.getElementById('questionCount');
+        const topicMixSpan = document.getElementById('topicMix');
+        const toTopBtn = document.getElementById('toTopBtn');
+
+        function initNewExam() {
+            const selectedIndices = [];
+            while (selectedIndices.length < TOTAL_QUESTIONS) {
+                const r = Math.floor(Math.random() * fullBank.length);
+                if (!selectedIndices.includes(r)) selectedIndices.push(r);
+            }
+            currentExamQuestions = selectedIndices.map(idx => shuffleQuestionOptions(fullBank[idx]));
+            userAnswers = new Array(TOTAL_QUESTIONS).fill(null);
+            examCorrected = false;
+            scoreSummary.classList.remove('show');
+            scoreSummary.innerHTML = '';
+            liveScoreDisplay.textContent = '⭐ Puntuación: — / 10';
+            questionCountSpan.textContent = `📋 ${TOTAL_QUESTIONS} preguntas`;
+            const topics = [...new Set(currentExamQuestions.map(q => q.topic))];
+            topicMixSpan.textContent = `🎯 Temas: ${topics.slice(0, 4).join(', ')}${topics.length > 4 ? '...' : ''}`;
+            renderAllQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveAnswer(index, letter) {
+            if (examCorrected) return;
+            userAnswers[index] = letter;
+            updateLiveScorePreview();
+            updateQuestionBlockVisual(index);
+        }
+
+        function updateLiveScorePreview() {
+            let correctCount = 0;
+            for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+                if (userAnswers[i] && userAnswers[i] === currentExamQuestions[i].correct) correctCount++;
+            }
+            liveScoreDisplay.textContent = `⭐ Puntuación: ${correctCount} / ${TOTAL_QUESTIONS}`;
+        }
+
+        function updateQuestionBlockVisual(index) {
+            const block = document.getElementById(`q-block-${index}`);
+            if (!block) return;
+            block.classList.remove('answered-correct', 'answered-incorrect');
+            if (examCorrected) {
+                const q = currentExamQuestions[index];
+                const userAns = userAnswers[index];
+                if (userAns) {
+                    block.classList.add(userAns === q.correct ? 'answered-correct' : 'answered-incorrect');
+                }
+            }
+            if (examCorrected) {
+                const fbEl = document.getElementById(`fb-${index}`);
+                if (fbEl) updateFeedbackElement(fbEl, index);
+            }
+        }
+
+        function renderAllQuestions() {
+            let html = '';
+            currentExamQuestions.forEach((q, idx) => {
+                const selected = userAnswers[idx];
+                const disabledAttr = examCorrected ? 'disabled' : '';
+                let blockClass = '';
+                if (examCorrected && selected) {
+                    blockClass = selected === q.correct ? 'answered-correct' : 'answered-incorrect';
+                }
+                const numOptions = q.options.length;
+                html += `
+                <div class="question-block ${blockClass}" id="q-block-${idx}">
+                    <div class="q-header">
+                        <span class="q-num">📌 Pregunta ${idx + 1} de ${TOTAL_QUESTIONS}</span>
+                        <span class="q-topic">🔖 ${q.topic}</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options" id="options-${idx}">
+                `;
+                q.options.forEach((opt, optIdx) => {
+                    const letter = LETTERS[optIdx];
+                    const isChecked = (selected === letter);
+                    html += `
+                        <div class="option" data-letter="${letter}" data-qindex="${idx}">
+                            <input type="radio" name="q_${idx}" value="${letter}" id="opt_${idx}_${letter}" ${isChecked ? 'checked' : ''} ${disabledAttr}>
+                            <label for="opt_${idx}_${letter}"><strong>${letter.toUpperCase()})</strong> ${opt}</label>
+                        </div>
+                    `;
+                });
+                html += `
+                    </div>
+                    <div class="feedback-line ${examCorrected ? 'show' : ''} ${examCorrected ? (selected === q.correct ? 'correct-fb' : (selected ? 'incorrect-fb' : 'pending-fb')) : ''}" id="fb-${idx}">
+                        ${examCorrected ? getFeedbackText(idx) : ''}
+                    </div>
+                </div>
+                `;
+            });
+            questionsContainer.innerHTML = html;
+
+            document.querySelectorAll('.option').forEach(div => {
+                const qIndex = parseInt(div.getAttribute('data-qindex'));
+                const letter = div.getAttribute('data-letter');
+                const radio = div.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.addEventListener('change', () => {
+                        if (radio.checked) saveAnswer(qIndex, letter);
+                    });
+                }
+                div.addEventListener('click', (e) => {
+                    if (examCorrected) return;
+                    if (e.target.tagName !== 'INPUT') {
+                        const radioInside = div.querySelector('input');
+                        if (radioInside && !radioInside.checked) {
+                            radioInside.checked = true;
+                            saveAnswer(qIndex, letter);
+                        }
+                    }
+                });
+            });
+            updateLiveScorePreview();
+        }
+
+        function getFeedbackText(index) {
+            const q = currentExamQuestions[index];
+            const userAns = userAnswers[index];
+            if (!userAns) {
+                const correctIdx = LETTERS.indexOf(q.correct);
+                return `⚠️ <strong>Sin responder.</strong> La respuesta correcta es ${q.correct.toUpperCase()}) ${q.options[correctIdx]}.<br>${q.explanation}`;
+            }
+            if (userAns === q.correct) {
+                return `✅ <strong>¡Correcto!</strong> ${q.explanation}`;
+            } else {
+                const correctIdx = LETTERS.indexOf(q.correct);
+                return `❌ <strong>Incorrecto.</strong> La respuesta correcta es ${q.correct.toUpperCase()}) ${q.options[correctIdx]}.<br>${q.explanation}`;
+            }
+        }
+
+        function updateFeedbackElement(fbEl, index) {
+            const q = currentExamQuestions[index];
+            const userAns = userAnswers[index];
+            fbEl.innerHTML = getFeedbackText(index);
+            fbEl.classList.remove('correct-fb', 'incorrect-fb', 'pending-fb');
+            if (!userAns) fbEl.classList.add('pending-fb');
+            else if (userAns === q.correct) fbEl.classList.add('correct-fb');
+            else fbEl.classList.add('incorrect-fb');
+            fbEl.classList.add('show');
+        }
+
+        function correctExam() {
+            if (examCorrected) {
+                alert('El examen ya fue corregido. Presiona "Nueva Prueba" para generar otra evaluación.');
+                return;
+            }
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                if (!confirm(`Aún tienes ${unanswered} pregunta(s) sin responder. Las no respondidas contarán como incorrectas. ¿Deseas continuar?`)) return;
+            }
+            examCorrected = true;
+            let correctCount = 0;
+            for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+                if (userAnswers[i] === currentExamQuestions[i].correct) correctCount++;
+            }
+            for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+                const block = document.getElementById(`q-block-${i}`);
+                const fbEl = document.getElementById(`fb-${i}`);
+                const q = currentExamQuestions[i];
+                const userAns = userAnswers[i];
+                const radios = document.querySelectorAll(`input[name="q_${i}"]`);
+                radios.forEach(r => r.disabled = true);
+                if (block) {
+                    block.classList.remove('answered-correct', 'answered-incorrect');
+                    if (userAns) block.classList.add(userAns === q.correct ? 'answered-correct' : 'answered-incorrect');
+                }
+                if (fbEl) updateFeedbackElement(fbEl, i);
+            }
+            const percent = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+            let emoji = '🌟', message = '';
+            if (percent >= 90) { emoji = '🏆'; message = '¡Excelente dominio de la metalurgia del acero!'; }
+            else if (percent >= 70) { emoji = '👍'; message = 'Buen trabajo, repasa algunos procesos.'; }
+            else if (percent >= 50) { emoji = '📚'; message = 'Necesitas reforzar varios conceptos siderúrgicos.'; }
+            else { emoji = '💪'; message = 'Es recomendable repasar todo el material del viaje metalúrgico.'; }
+            scoreSummary.innerHTML = `${emoji} <strong>Resultado:</strong> ${correctCount} de ${TOTAL_QUESTIONS} aciertos (${percent}%)<br><span style="font-size:0.9rem;">${message}</span>`;
+            scoreSummary.classList.add('show');
+            liveScoreDisplay.textContent = `⭐ Puntuación: ${correctCount} / ${TOTAL_QUESTIONS}`;
+            scoreSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function newExam() {
+            if (examCorrected || userAnswers.some(a => a !== null)) {
+                if (!confirm('¿Generar una nueva prueba aleatoria? Se perderán las respuestas actuales.')) return;
+            }
+            initNewExam();
+        }
+
+        correctBtn.addEventListener('click', correctExam);
+        newExamBtn.addEventListener('click', newExam);
+        window.addEventListener('scroll', () => {
+            toTopBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+        });
+        toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        initNewExam();
+    })();
+</script>
+</body>
+</html>
